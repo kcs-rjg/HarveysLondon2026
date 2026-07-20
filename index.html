@@ -1,0 +1,448 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Big London Weekend</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,700;9..144,900&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --meadow:#F2F6EA;
+  --ink:#243120;
+  --green:#33613F;
+  --green-deep:#24492E;
+  --thames:#3A6B9F;
+  --sun:#F3B33C;
+  --card:#FFFFFF;
+  --line:#C9D6BE;
+  --muted:#5E6E58;
+  --radius:18px;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+@media (prefers-reduced-motion: reduce){
+  html{scroll-behavior:auto}
+  *,*::before,*::after{animation:none!important;transition:none!important}
+}
+body{
+  font-family:'Nunito',system-ui,sans-serif;
+  background:var(--meadow);
+  color:var(--ink);
+  line-height:1.55;
+  min-height:100vh;
+}
+.wrap{max-width:760px;margin:0 auto;padding:0 18px 90px}
+
+/* ---------- header ---------- */
+header{
+  padding:34px 0 10px;
+  text-align:center;
+}
+.eyebrow{
+  font-weight:800;font-size:.75rem;letter-spacing:.18em;text-transform:uppercase;
+  color:var(--green);
+}
+h1{
+  font-family:'Fraunces',serif;font-weight:900;
+  font-size:clamp(2rem,7vw,3.1rem);
+  line-height:1.05;margin:.25rem 0 .4rem;color:var(--green-deep);
+}
+.sub{color:var(--muted);font-size:.95rem;max-width:34rem;margin:0 auto}
+
+/* ---------- countdown ---------- */
+.count{
+  margin:20px auto 6px;background:var(--green-deep);color:#F4F8EE;
+  border-radius:var(--radius);padding:18px 16px 20px;text-align:center;
+  box-shadow:0 6px 0 rgba(36,73,46,.18);
+}
+.count .label{font-size:.78rem;letter-spacing:.14em;text-transform:uppercase;font-weight:700;color:#BFD6B5}
+.count .big{font-family:'Fraunces',serif;font-weight:700;font-size:clamp(1.3rem,5vw,1.9rem);margin-top:4px}
+.count .big b{font-weight:900;color:var(--sun)}
+
+/* ---------- tabs ---------- */
+nav{
+  display:flex;gap:8px;justify-content:center;flex-wrap:wrap;
+  margin:22px 0 18px;position:sticky;top:0;z-index:5;
+  background:linear-gradient(var(--meadow) 82%,rgba(242,246,234,0));
+  padding:10px 0 12px;
+}
+.tab{
+  border:2px solid var(--green);background:var(--card);color:var(--green-deep);
+  font:800 .9rem 'Nunito',sans-serif;border-radius:999px;padding:9px 15px;
+  cursor:pointer;display:flex;align-items:center;gap:7px;transition:transform .12s ease;
+}
+.tab svg{width:17px;height:17px}
+.tab:hover{transform:translateY(-2px)}
+.tab[aria-selected="true"]{background:var(--green);color:#fff}
+.tab.spot[aria-selected="true"]{background:var(--sun);border-color:var(--sun);color:var(--green-deep)}
+.tab.spot{border-color:var(--sun)}
+.tab:focus-visible,button:focus-visible,a:focus-visible{outline:3px solid var(--thames);outline-offset:2px}
+
+/* ---------- day panel ---------- */
+.day-head{display:flex;align-items:baseline;justify-content:space-between;gap:10px;flex-wrap:wrap;margin:6px 2px 4px}
+.day-title{font-family:'Fraunces',serif;font-weight:900;font-size:1.55rem;color:var(--green-deep)}
+.day-date{color:var(--muted);font-weight:700;font-size:.9rem}
+.progress{
+  height:12px;background:#DFE9D3;border-radius:99px;overflow:hidden;margin:8px 2px 20px;
+}
+.progress > div{height:100%;width:0;background:linear-gradient(90deg,var(--green),#5B9A63);border-radius:99px;transition:width .35s ease}
+.prog-note{font-size:.82rem;color:var(--muted);font-weight:700;margin:-14px 2px 18px;text-align:right}
+
+/* ---------- trail ---------- */
+.trail{list-style:none;position:relative;padding-left:4px}
+.trail::before{
+  content:"";position:absolute;left:29px;top:14px;bottom:14px;width:0;
+  border-left:3px dashed var(--line);
+}
+.stop{position:relative;padding:0 0 14px 74px;min-height:64px}
+.node{
+  position:absolute;left:6px;top:2px;width:48px;height:48px;border-radius:50%;
+  border:3px solid var(--green);background:var(--card);color:var(--green-deep);
+  display:flex;align-items:center;justify-content:center;cursor:pointer;
+  transition:transform .12s ease,background .2s ease;z-index:1;
+}
+.node svg{width:24px;height:24px}
+.node:hover{transform:scale(1.08)}
+.stop.done .node{background:var(--green);border-color:var(--green);color:#fff}
+.stop.now .node{border-color:var(--sun);box-shadow:0 0 0 5px rgba(243,179,60,.35)}
+.card{
+  background:var(--card);border-radius:var(--radius);padding:12px 15px;
+  box-shadow:0 2px 0 rgba(36,49,32,.07);
+}
+.stop.done .card{opacity:.68}
+.stop-top{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap}
+.time{font:800 .8rem 'Nunito';color:#fff;background:var(--thames);border-radius:7px;padding:2px 8px;white-space:nowrap}
+.stop.now .time{background:var(--sun);color:var(--green-deep)}
+.stop-name{font-family:'Fraunces',serif;font-weight:700;font-size:1.08rem}
+.detail{font-size:.92rem;color:#41503C;margin-top:4px}
+.stop-links{margin-top:6px}
+.maplink{
+  font-size:.8rem;font-weight:800;color:var(--thames);text-decoration:none;
+  border-bottom:2px solid rgba(58,107,159,.3);
+}
+.maplink:hover{border-bottom-color:var(--thames)}
+.donetag{
+  display:none;font-size:.72rem;font-weight:800;letter-spacing:.08em;text-transform:uppercase;
+  color:var(--green);border:2px solid var(--green);border-radius:6px;padding:1px 7px;
+}
+.stop.done .donetag{display:inline-block}
+.nowtag{
+  display:none;font-size:.72rem;font-weight:800;letter-spacing:.08em;text-transform:uppercase;
+  color:var(--green-deep);background:var(--sun);border-radius:6px;padding:2px 7px;
+}
+.stop.now .nowtag{display:inline-block}
+
+/* ---------- spotters ---------- */
+.spot-intro{text-align:center;color:var(--muted);font-weight:600;margin:4px auto 16px;max-width:30rem}
+.bingo{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.bcell{
+  background:var(--card);border:3px solid var(--line);border-radius:var(--radius);
+  padding:14px 6px 12px;text-align:center;cursor:pointer;position:relative;
+  font:700 .82rem 'Nunito';color:var(--ink);transition:transform .12s ease;
+}
+.bcell:hover{transform:translateY(-3px)}
+.bcell svg{width:34px;height:34px;display:block;margin:0 auto 6px;color:var(--green-deep)}
+.bcell.spotted{border-color:var(--sun);background:#FFF7E3}
+.stamp{
+  position:absolute;inset:auto 6px 6px auto;width:26px;height:26px;border-radius:50%;
+  background:var(--sun);color:var(--green-deep);display:none;align-items:center;justify-content:center;
+}
+.stamp svg{width:16px;height:16px;margin:0;color:var(--green-deep)}
+.bcell.spotted .stamp{display:flex}
+.bingo-banner{
+  display:none;margin:18px auto 0;text-align:center;background:var(--sun);
+  color:var(--green-deep);font-family:'Fraunces',serif;font-weight:900;font-size:1.3rem;
+  border-radius:var(--radius);padding:14px;
+}
+.bingo-banner.show{display:block;animation:pop .5s ease}
+@keyframes pop{0%{transform:scale(.7);opacity:0}70%{transform:scale(1.05)}100%{transform:scale(1);opacity:1}}
+.confetti{position:fixed;top:-12px;border-radius:3px;z-index:50;pointer-events:none}
+
+/* ---------- footer ---------- */
+footer{margin-top:34px;text-align:center;color:var(--muted);font-size:.8rem}
+footer p+p{margin-top:4px}
+.panel{display:none}
+.panel.active{display:block;animation:fade .25s ease}
+@keyframes fade{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+@media (max-width:430px){
+  .stop{padding-left:66px}
+  .trail::before{left:26px}
+  .node{width:44px;height:44px}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header>
+  <div class="eyebrow">Thursday 23rd to Sunday 26th July 2026</div>
+  <h1>The Big London Weekend</h1>
+  <p class="sub">Rachael, Michael, Boden and Blair visit Rob and Will in Putney. Four days of commons, rivers, deer and one very naughty school.</p>
+</header>
+
+<div class="count" id="count">
+  <div class="label" id="countLabel">The adventure begins in</div>
+  <div class="big" id="countBig">&hellip;</div>
+</div>
+
+<nav role="tablist" aria-label="Days of the visit" id="tabs"></nav>
+
+<main id="panels"></main>
+
+<footer>
+  <p>Ticks and stamps reset if the page is refreshed, so screenshot your bingo card for posterity.</p>
+  <p>Boat: tap in with contactless at the pier. Deer: admire from 50 metres.</p>
+</footer>
+</div>
+
+<script>
+/* ---------------- icons ---------------- */
+const I = {
+  home:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11l9-8 9 8"/><path d="M5 10v10h5v-6h4v6h5V10"/></svg>',
+  windmill:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 12L12 3"/><path d="M12 12l7.8 4.5"/><path d="M12 12L4.2 16.5"/><circle cx="12" cy="12" r="1.6"/><path d="M9 21h6l-1-7h-4z"/></svg>',
+  pot:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 10h16v6a4 4 0 0 1-4 4H8a4 4 0 0 1-4-4z"/><path d="M2 10h20"/><path d="M9 6c0-1.5 1-1.5 1-3M14 6c0-1.5 1-1.5 1-3"/></svg>',
+  cup:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 8h12v6a5 5 0 0 1-5 5H9a5 5 0 0 1-5-5z"/><path d="M16 9h2.5a2.5 2.5 0 0 1 0 5H16"/><path d="M8 5c0-1 .8-1 .8-2M12 5c0-1 .8-1 .8-2"/></svg>',
+  boat:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 15h18l-2.5 4h-13z"/><path d="M6 15V9h9l3 6"/><path d="M9 9V5h4v4"/></svg>',
+  park:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l5 7h-3l4 6H6l4-6H7z"/><path d="M12 16v5"/></svg>',
+  croissant:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17c-2 0-4-1-4-3 0-4 5-9 9-9 2 0 3 2 3 4"/><path d="M7 17c1 2 3 3 5 3 4 0 9-5 9-9 0-2-1.5-3-3-3-4 0-11 5-11 9z"/></svg>',
+  train:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="3" width="14" height="13" rx="3"/><path d="M5 10h14"/><circle cx="9" cy="13" r=".8"/><circle cx="15" cy="13" r=".8"/><path d="M8 16l-2 4M16 16l2 4"/></svg>',
+  run:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="14" cy="4.5" r="1.8"/><path d="M9 20l2.5-5L9 12l3-4 3 2.5 3 .5"/><path d="M12 8L8 9 6 12"/></svg>',
+  bus:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="4" width="16" height="13" rx="3"/><path d="M4 11h16"/><circle cx="8.5" cy="17.5" r="1.5"/><circle cx="15.5" cy="17.5" r="1.5"/></svg>',
+  theatre:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 5c2 1 5 1 7 0v8a3.5 3.5 0 0 1-7 0z"/><path d="M13 8c2 1 5 1 7 0v8a3.5 3.5 0 0 1-7 0z"/><path d="M6 9h.01M9 9h.01M15 12h.01M18 12h.01"/></svg>',
+  pizza:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 5c6-3 12-3 18 0L12 21z"/><path d="M4.5 8c5-2 10-2 15 0"/><circle cx="10" cy="11" r="1"/><circle cx="14" cy="13" r="1"/><circle cx="11" cy="15.5" r="1"/></svg>',
+  deer:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 8C6 7 5 5 5 3M8 8c-1-1-3-1-4 0M16 8c2-1 3-3 3-5M16 8c1-1 3-1 4 0"/><path d="M9 9a3 3 0 0 1 6 0c0 2-1 3-1 5l1 7h-2l-1-4h-0l-1 4H9l1-7c0-2-1-3-1-5z"/></svg>',
+  roast:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 15a8 8 0 0 1 16 0"/><path d="M2 15h20"/><path d="M12 7V5"/><circle cx="12" cy="4" r="1"/></svg>',
+  wave:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 11V6a1.5 1.5 0 0 1 3 0v4V4.5a1.5 1.5 0 0 1 3 0V10V6a1.5 1.5 0 0 1 3 0v6c0 4-2 7-6 7s-6-3-6-6v-3a1.5 1.5 0 0 1 3 0z"/></svg>',
+  church:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v5M10 4h4"/><path d="M12 7l6 5v9H6v-9z"/><path d="M10 21v-4a2 2 0 0 1 4 0v4"/></svg>',
+  tick:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12l5 5L20 6"/></svg>',
+  heron:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 4l3 1-3 1v4c0 4-3 6-6 6v5M11 21h-2M11 18c-3 0-6-2-6-5"/><circle cx="17.5" cy="4.5" r=".5"/></svg>',
+  parakeet:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 3a5 5 0 0 1 5 5v3c0 5-4 8-8 8l-4 3v-5c-2-1-3-3-3-5a9 9 0 0 1 10-9z"/><circle cx="14" cy="8" r=".7"/><path d="M19 8l3 1-3 1"/></svg>',
+  squirrel:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13a4 4 0 0 0 3-4c0-3-2-6-6-6-3 0-5 2-5 5 0 4 4 4 4 8 0 2-2 4-4 4H6"/><path d="M6 20c-2 0-3-2-3-4 0-3 2-5 5-5"/><circle cx="15.5" cy="6.5" r=".6"/></svg>',
+  dog:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 9l2-4 3 2h5l3-3 2 5v4a6 6 0 0 1-6 6h-3a6 6 0 0 1-6-6z"/><circle cx="9" cy="10" r=".7"/><circle cx="15" cy="10" r=".7"/><path d="M12 13v2"/></svg>',
+  trunchbull:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="7" r="3.5"/><path d="M5 21c0-4 3-7 7-7s7 3 7 7"/><path d="M9 6h6M12 3.5V2"/></svg>',
+  otter:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 8a6 6 0 0 1 12 0v4a6 6 0 0 1-12 0z"/><circle cx="9.5" cy="8" r=".7"/><circle cx="14.5" cy="8" r=".7"/><path d="M12 10v1.5M10.5 13c.8.8 2.2.8 3 0M3 20c3 2 15 2 18 0"/></svg>'
+};
+
+/* ---------------- data ---------------- */
+const DAYS = [
+ {id:'thu', tab:'Thu', icon:'home', title:'Arrival day', date:'Thursday 23rd July',
+  stops:[
+   {h:17,m:0,time:'5.00pm',icon:'home',name:'Welcome to Putney',detail:'Bags down, drinks and biscuits, and a breather after the journey.'},
+   {h:18,m:0,time:'6.00pm',icon:'windmill',name:'Walk to the windmill',detail:'A gentle stroll across Putney Heath to the Wimbledon Common windmill. This is a sneak preview of Saturday morning, so scouts should memorise the route.',map:'Wimbledon Windmill, London'},
+   {h:19,m:15,time:'7.15pm',icon:'pot',name:'Supper at home',detail:'Rob cooks. Will lands home from the office at about 7.00pm, just in time to be given a job.'}
+ ]},
+ {id:'fri', tab:'Fri', icon:'boat', title:'River day', date:'Friday 24th July',
+  stops:[
+   {h:9,m:0,time:'9.00am',icon:'cup',name:'The Clubhouse, Putney Embankment',detail:'Coffee and pastries by the boathouses. Watch the rowing crews carry their boats down to the water.',map:'The Clubhouse, Putney Embankment, London'},
+   {h:10,m:5,time:'10.05am',icon:'boat',name:'Uber Boat from Putney Pier',detail:'The RB6 eastbound, two minutes along the Embankment. Thirty minutes on the river past Hurlingham, Wandsworth and Chelsea Harbour. Tap in with a contactless card.',map:'Putney Pier, London'},
+   {h:10,m:40,time:'10.40am',icon:'park',name:'Battersea Park',detail:'Off at Battersea Power Station Pier and into the park: the adventure playground, and the Children\u2019s Zoo with otters and meerkats if we fancy it. Picnic lunch on the grass.',map:'Battersea Park Children\u2019s Zoo, London'},
+   {h:14,m:0,time:'2.00pm',icon:'church',name:'St Mary\u2019s Church, Battersea',detail:'A quiet riverside churchyard with benches and a little coffee trailer. The painter Turner used to work from a window here.',map:'St Mary\u2019s Church, Battersea, London'},
+   {h:14,m:30,time:'2.30pm',icon:'croissant',name:'Manna Dew bakery',detail:'Around the corner on Battersea High Street. Award-winning pastries, all gluten free, and nobody can tell. Closes at 4.30pm.',map:'Manna Dew, Battersea High Street, London'},
+   {h:16,m:0,time:'4.00pm',icon:'train',name:'Home again',detail:'A short walk to Clapham Junction and a four-minute train to Putney, or one more boat from St Mary\u2019s pier for anyone not yet ready to leave the river.'}
+ ]},
+ {id:'sat', tab:'Sat', icon:'theatre', title:'Show day', date:'Saturday 25th July',
+  stops:[
+   {h:8,m:45,time:'8.45am',icon:'run',name:'Wimbledon Common parkrun',detail:'At the windmill for 8.45am, run at 9.00am. One 2.5k lap of the common, everyone together, medals in the form of bragging rights.',map:'Wimbledon Windmill, London'},
+   {h:9,m:45,time:'9.45am',icon:'cup',name:'Windmill Tearooms',detail:'Hot chocolates, ice creams, bacon rolls and a full debrief of the race.',map:'Windmill Tearooms, Wimbledon Common'},
+   {h:12,m:45,time:'12.45pm',icon:'bus',name:'Off to town',detail:'Showered, fed and out of the door. The number 14 bus from the Green Man goes all the way to Cambridge Circus, or the District line from East Putney is quicker.'},
+   {h:14,m:30,time:'2.30pm',icon:'theatre',name:'Matilda at the Cambridge Theatre',detail:'Curtain up at 2.30pm, finishing at about 5.05pm. Revolting children, a terrifying headmistress and a small girl with a big brain.',map:'Cambridge Theatre, Earlham Street, London'},
+   {h:17,m:15,time:'5.15pm',icon:'park',name:'Neal\u2019s Yard wander',detail:'Ten minutes in the most colourful courtyard in London, then home before anyone falls asleep standing up.',map:'Neal\u2019s Yard, London'},
+   {h:19,m:0,time:'7.00pm',icon:'pizza',name:'Piccolo\u2019s pizza at home',detail:'Ordered in, eaten on the sofa. A parkrun and a West End show in one day has earned it.'}
+ ]},
+ {id:'sun', tab:'Sun', icon:'deer', title:'Deer day', date:'Sunday 26th July',
+  stops:[
+   {h:9,m:30,time:'9.30am',icon:'deer',name:'Richmond Park, Roehampton Gate',detail:'A thirty-minute walk from home into the wildest park in London. Deer spotting along Beverley Brook, admired from a respectful 50 metres.',map:'Roehampton Gate, Richmond Park'},
+   {h:12,m:0,time:'12.00pm',icon:'roast',name:'Sunday roast at the Telegraph',detail:'The pub on the heath, two minutes from home. Yorkshire puddings the size of Blair\u2019s head.',map:'The Telegraph, Putney Heath, London'},
+   {h:15,m:0,time:'3.00pm',icon:'wave',name:'Farewell',detail:'Bags packed, pockets checked for conkers, and safe travels home. Same again next year.'}
+ ]}
+];
+
+const SPOTS = [
+ {icon:'deer',label:'A red deer'},
+ {icon:'heron',label:'A heron on the Thames'},
+ {icon:'windmill',label:'The windmill sails'},
+ {icon:'otter',label:'An otter or meerkat'},
+ {icon:'parakeet',label:'A green parakeet'},
+ {icon:'boat',label:'A boat with a flag'},
+ {icon:'bus',label:'A red double-decker'},
+ {icon:'trunchbull',label:'Miss Trunchbull'},
+ {icon:'squirrel',label:'A cheeky squirrel'}
+];
+
+/* ---------------- state (in memory) ---------------- */
+const state = { done:{}, spotted:new Set() };
+
+/* ---------------- build tabs + panels ---------------- */
+const tabsEl = document.getElementById('tabs');
+const panelsEl = document.getElementById('panels');
+
+DAYS.forEach(d=>{
+  const b = document.createElement('button');
+  b.className='tab'; b.role='tab'; b.id='tab-'+d.id;
+  b.setAttribute('aria-controls','panel-'+d.id);
+  b.innerHTML = I[d.icon] + d.tab;
+  b.addEventListener('click',()=>selectTab(d.id));
+  tabsEl.appendChild(b);
+});
+const spotBtn = document.createElement('button');
+spotBtn.className='tab spot'; spotBtn.role='tab'; spotBtn.id='tab-spotters';
+spotBtn.setAttribute('aria-controls','panel-spotters');
+spotBtn.innerHTML = I.parakeet + 'Spotters';
+spotBtn.addEventListener('click',()=>selectTab('spotters'));
+tabsEl.appendChild(spotBtn);
+
+DAYS.forEach(d=>{
+  const p = document.createElement('section');
+  p.className='panel'; p.id='panel-'+d.id; p.role='tabpanel';
+  p.setAttribute('aria-labelledby','tab-'+d.id);
+  let stops = d.stops.map((s,i)=>`
+    <li class="stop" id="${d.id}-${i}">
+      <button class="node" aria-pressed="false" aria-label="Mark ${s.name} as done" data-day="${d.id}" data-i="${i}">${I[s.icon]}</button>
+      <div class="card">
+        <div class="stop-top">
+          <span class="time">${s.time}</span>
+          <span class="stop-name">${s.name}</span>
+          <span class="donetag">Done</span>
+          <span class="nowtag">Up next</span>
+        </div>
+        <p class="detail">${s.detail}</p>
+        ${s.map?`<p class="stop-links"><a class="maplink" target="_blank" rel="noopener" href="https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(s.map)}">Open in Maps</a></p>`:''}
+      </div>
+    </li>`).join('');
+  p.innerHTML = `
+    <div class="day-head">
+      <span class="day-title">${d.title}</span>
+      <span class="day-date">${d.date}</span>
+    </div>
+    <div class="progress"><div id="bar-${d.id}"></div></div>
+    <p class="prog-note" id="note-${d.id}"></p>
+    <ul class="trail">${stops}</ul>`;
+  panelsEl.appendChild(p);
+});
+
+const sp = document.createElement('section');
+sp.className='panel'; sp.id='panel-spotters'; sp.role='tabpanel';
+sp.setAttribute('aria-labelledby','tab-spotters');
+sp.innerHTML = `
+  <div class="day-head"><span class="day-title">Spotter\u2019s Bingo</span><span class="day-date">All weekend</span></div>
+  <p class="spot-intro">Boden and Blair: tap a square when you spot the real thing. First to a full card chooses Saturday\u2019s pizza toppings.</p>
+  <div class="bingo">${SPOTS.map((s,i)=>`
+    <button class="bcell" data-i="${i}" aria-pressed="false">
+      ${I[s.icon]}${s.label}
+      <span class="stamp">${I.tick}</span>
+    </button>`).join('')}
+  </div>
+  <div class="bingo-banner" id="banner">FULL CARD! Champion spotter of SW15.</div>`;
+panelsEl.appendChild(sp);
+
+/* ---------------- interactions ---------------- */
+function selectTab(id){
+  document.querySelectorAll('.tab').forEach(t=>t.setAttribute('aria-selected', t.id==='tab-'+id));
+  document.querySelectorAll('.panel').forEach(p=>p.classList.toggle('active', p.id==='panel-'+id));
+}
+
+panelsEl.addEventListener('click',e=>{
+  const node = e.target.closest('.node');
+  if(node){
+    const key = node.dataset.day+'-'+node.dataset.i;
+    state.done[key] = !state.done[key];
+    const li = document.getElementById(key);
+    li.classList.toggle('done', !!state.done[key]);
+    node.setAttribute('aria-pressed', !!state.done[key]);
+    updateProgress(node.dataset.day);
+    return;
+  }
+  const cell = e.target.closest('.bcell');
+  if(cell){
+    const i = cell.dataset.i;
+    if(state.spotted.has(i)){ state.spotted.delete(i); cell.classList.remove('spotted'); cell.setAttribute('aria-pressed','false'); }
+    else { state.spotted.add(i); cell.classList.add('spotted'); cell.setAttribute('aria-pressed','true'); }
+    if(state.spotted.size===SPOTS.length){ celebrate(); }
+    else { document.getElementById('banner').classList.remove('show'); }
+  }
+});
+
+function updateProgress(dayId){
+  const d = DAYS.find(x=>x.id===dayId);
+  const doneCount = d.stops.filter((_,i)=>state.done[dayId+'-'+i]).length;
+  document.getElementById('bar-'+dayId).style.width = (100*doneCount/d.stops.length)+'%';
+  document.getElementById('note-'+dayId).textContent =
+    doneCount===0 ? '' :
+    doneCount===d.stops.length ? 'Day complete. Bravo, team.' :
+    doneCount+' of '+d.stops.length+' done';
+}
+
+function celebrate(){
+  document.getElementById('banner').classList.add('show');
+  if(window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  const colours=['#F3B33C','#33613F','#3A6B9F','#D4593F'];
+  for(let i=0;i<36;i++){
+    const c=document.createElement('span');
+    c.className='confetti';
+    c.style.left=(Math.random()*100)+'vw';
+    c.style.width=c.style.height=(6+Math.random()*7)+'px';
+    c.style.background=colours[i%colours.length];
+    const dur=2.2+Math.random()*1.6;
+    c.animate([{transform:'translateY(-10px) rotate(0deg)'},{transform:'translateY(105vh) rotate('+(360+Math.random()*360)+'deg)'}],{duration:dur*1000,easing:'ease-in'});
+    document.body.appendChild(c);
+    setTimeout(()=>c.remove(),dur*1000);
+  }
+}
+
+/* ---------------- countdown + now/next ---------------- */
+const START = new Date(2026,6,23,17,0,0);
+const END   = new Date(2026,6,26,15,0,0);
+const DAY_DATES = {thu:23,fri:24,sat:25,sun:26};
+
+function tick(){
+  const now = new Date();
+  const label = document.getElementById('countLabel');
+  const big = document.getElementById('countBig');
+  if(now < START){
+    const ms = START-now;
+    const dys = Math.floor(ms/86400000);
+    const hrs = Math.floor(ms%86400000/3600000);
+    const min = Math.floor(ms%3600000/60000);
+    const sec = Math.floor(ms%60000/1000);
+    label.textContent = 'The adventure begins in';
+    big.innerHTML = `<b>${dys}</b> days <b>${hrs}</b> hrs <b>${min}</b> min <b>${sec}</b> sec`;
+  } else if(now <= END){
+    const dayName = ['','','','Day 1: arrival day','Day 2: river day','Day 3: show day','Day 4: deer day'][now.getDate()] || 'The weekend';
+    label.textContent = 'It is happening';
+    big.innerHTML = (now.getMonth()===6 && now.getFullYear()===2026) ? `<b>${dayName}</b>` : '<b>The weekend is here</b>';
+    highlightNow(now);
+  } else {
+    label.textContent = 'The verdict';
+    big.innerHTML = '<b>What a weekend that was.</b> Same again next year.';
+  }
+}
+
+function highlightNow(now){
+  if(now.getFullYear()!==2026 || now.getMonth()!==6) return;
+  document.querySelectorAll('.stop').forEach(s=>s.classList.remove('now'));
+  const todayId = Object.keys(DAY_DATES).find(k=>DAY_DATES[k]===now.getDate());
+  if(!todayId) return;
+  const d = DAYS.find(x=>x.id===todayId);
+  const mins = now.getHours()*60+now.getMinutes();
+  const next = d.stops.findIndex(s=>(s.h*60+s.m)>=mins);
+  const idx = next===-1 ? d.stops.length-1 : next;
+  const li = document.getElementById(todayId+'-'+idx);
+  if(li && !li.classList.contains('done')) li.classList.add('now');
+}
+
+/* default tab: today's day during the visit, otherwise Thursday */
+(function init(){
+  const now = new Date();
+  let def = 'thu';
+  if(now.getFullYear()===2026 && now.getMonth()===6 && DAY_DATES.thu<=now.getDate() && now.getDate()<=DAY_DATES.sun){
+    def = Object.keys(DAY_DATES).find(k=>DAY_DATES[k]===now.getDate());
+  }
+  selectTab(def);
+  tick();
+  setInterval(tick,1000);
+})();
+</script>
+</body>
+</html>
