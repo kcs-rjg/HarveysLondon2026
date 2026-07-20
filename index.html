@@ -187,7 +187,7 @@ footer p+p{margin-top:4px}
 <header>
   <div class="eyebrow">Thursday 23rd to Sunday 26th July 2026</div>
   <h1>The Big London Weekend</h1>
-  <p class="sub">Rachael, Michael, Boden and Blair visit Rob and Will in Putney. Four days of commons, rivers, deer and one very naughty school.</p>
+  <p class="sub">Rachael, Michael, Boden and Blair visit Rob and Will in Putney. Four days of commons, rivers, deer and meerkats.</p>
 </header>
 
 <div class="count" id="count">
@@ -200,8 +200,7 @@ footer p+p{margin-top:4px}
 <main id="panels"></main>
 
 <footer>
-  <p>Spotter stamps are shared across everyone&rsquo;s phones and saved online. Day ticks reset on refresh.</p>
-  <p>Boat: tap in with contactless at the pier. Deer: admire from 50 metres.</p>
+  <p>Spotter stamps are shared across everyone&rsquo;s phones and saved online.</p>
 </footer>
 </div>
 
@@ -252,7 +251,7 @@ const DAYS = [
    {h:9,m:0,time:'9.00am',icon:'cup',name:'The Clubhouse, Putney Embankment',detail:'Coffee and pastries by the boathouses. Watch the rowing crews carry their boats down to the water.',map:'The Clubhouse, Putney Embankment, London'},
    {h:10,m:5,time:'10.05am',icon:'boat',name:'Uber Boat from Putney Pier',detail:'The RB6 eastbound, two minutes along the Embankment. Thirty minutes on the river past Hurlingham, Wandsworth and Chelsea Harbour. Tap in with a contactless card.',map:'Putney Pier, London'},
    {h:10,m:40,time:'10.40am',icon:'park',name:'Battersea Park',detail:'Off at Battersea Power Station Pier and into the park: the adventure playground, and the Children\u2019s Zoo with otters and meerkats if we fancy it. Picnic lunch on the grass.',map:'Battersea Park Children\u2019s Zoo, London'},
-   {h:14,m:0,time:'2.00pm',icon:'church',name:'St Mary\u2019s Church, Battersea',detail:'A quiet riverside churchyard with benches and a little coffee trailer. The painter Turner used to work from a window here.',map:'St Mary\u2019s Church, Battersea, London'},
+   {h:14,m:0,time:'2.00pm',icon:'church',name:'St Mary\u2019s Church, Battersea',detail:'A quiet riverside churchyard with benches and a little coffee trailer.',map:'St Mary\u2019s Church, Battersea, London'},
    {h:14,m:30,time:'2.30pm',icon:'croissant',name:'Manna Dew bakery',detail:'Around the corner on Battersea High Street. Award-winning pastries, all gluten free, and nobody can tell. Closes at 4.30pm.',map:'Manna Dew, Battersea High Street, London'},
    {h:16,m:0,time:'4.00pm',icon:'train',name:'Home again',detail:'A short walk to Clapham Junction and a four-minute train to Putney, or one more boat from St Mary\u2019s pier for anyone not yet ready to leave the river.'}
  ]},
@@ -269,7 +268,7 @@ const DAYS = [
   stops:[
    {h:9,m:30,time:'9.30am',icon:'deer',name:'Richmond Park, Roehampton Gate',detail:'A thirty-minute walk from home into the wildest park in London. Deer spotting along Beverley Brook, admired from a respectful 50 metres.',map:'Roehampton Gate, Richmond Park'},
    {h:12,m:0,time:'12.00pm',icon:'roast',name:'Sunday roast at the Telegraph',detail:'The pub on the heath, two minutes from home. Yorkshire puddings the size of Blair\u2019s head.',map:'The Telegraph, Putney Heath, London'},
-   {h:15,m:0,time:'3.00pm',icon:'wave',name:'Farewell',detail:'Bags packed, pockets checked for conkers, and safe travels home. Same again next year.'}
+   {h:15,m:0,time:'3.00pm',icon:'wave',name:'Farewell',detail:'Bags packed and safe travels home.'}
  ]}
 ];
 
@@ -366,7 +365,7 @@ sp.innerHTML = `
 
   <div class="spot-section">
     <h2 class="spot-h">${I.parakeet} Nine things to spot</h2>
-    <p class="spot-intro">Boden and Blair: tap a square when you spot the real thing. This is one shared card for the whole team - a full house means the spotters choose Saturday\u2019s pizza toppings.</p>
+    <p class="spot-intro">Boden and Blair: tap a square when you spot the real thing. This is one shared card for the whole team.</p>
     <div class="bingo" id="grid-things">${SPOTS.map((s,i)=>`
       <button class="bcell" data-grid="things" data-i="${i}" aria-pressed="false">
         ${I[s.icon]}${s.label}
@@ -378,7 +377,7 @@ sp.innerHTML = `
 
   <div class="spot-section">
     <h2 class="spot-h">${I.camera} Albert\u2019s photo challenge</h2>
-    <p class="spot-intro">Albert is coming too. Get a photo of him in each of these places before home time on Sunday.</p>
+    <p class="spot-intro">We hope Albert is coming too?! Get a photo of him in each of these places before home time on Sunday.</p>
     <div class="bingo five" id="grid-albert">${ALBERT.map((s,i)=>`
       <button class="bcell" data-grid="albert" data-i="${i}" aria-pressed="false">
         ${I[s.icon]}${s.label}
