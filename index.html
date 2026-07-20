@@ -7,6 +7,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,700;9..144,900&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <style>
 :root{
   --meadow:#F2F6EA;
@@ -158,6 +159,13 @@ nav{
 }
 .bingo-banner.show{display:block;animation:pop .5s ease}
 @keyframes pop{0%{transform:scale(.7);opacity:0}70%{transform:scale(1.05)}100%{transform:scale(1);opacity:1}}
+.spot-section{margin-top:28px}
+.spot-h{font-family:'Fraunces',serif;font-weight:900;font-size:1.15rem;color:var(--green-deep);margin:0 2px 8px;display:flex;align-items:center;gap:8px}
+.spot-h svg{width:20px;height:20px;flex:none}
+.bingo.five{grid-template-columns:repeat(2,1fr)}
+.bingo.five .bcell:last-child{grid-column:1/-1}
+.sync{text-align:center;font-size:.78rem;font-weight:700;color:var(--muted);margin:18px 0 0}
+.sync b{color:var(--green)}
 .confetti{position:fixed;top:-12px;border-radius:3px;z-index:50;pointer-events:none}
 
 /* ---------- footer ---------- */
@@ -192,7 +200,7 @@ footer p+p{margin-top:4px}
 <main id="panels"></main>
 
 <footer>
-  <p>Ticks and stamps reset if the page is refreshed, so screenshot your bingo card for posterity.</p>
+  <p>Spotter stamps are shared across everyone&rsquo;s phones and saved online. Day ticks reset on refresh.</p>
   <p>Boat: tap in with contactless at the pier. Deer: admire from 50 metres.</p>
 </footer>
 </div>
@@ -222,7 +230,8 @@ const I = {
   squirrel:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13a4 4 0 0 0 3-4c0-3-2-6-6-6-3 0-5 2-5 5 0 4 4 4 4 8 0 2-2 4-4 4H6"/><path d="M6 20c-2 0-3-2-3-4 0-3 2-5 5-5"/><circle cx="15.5" cy="6.5" r=".6"/></svg>',
   dog:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 9l2-4 3 2h5l3-3 2 5v4a6 6 0 0 1-6 6h-3a6 6 0 0 1-6-6z"/><circle cx="9" cy="10" r=".7"/><circle cx="15" cy="10" r=".7"/><path d="M12 13v2"/></svg>',
   trunchbull:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="7" r="3.5"/><path d="M5 21c0-4 3-7 7-7s7 3 7 7"/><path d="M9 6h6M12 3.5V2"/></svg>',
-  otter:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 8a6 6 0 0 1 12 0v4a6 6 0 0 1-12 0z"/><circle cx="9.5" cy="8" r=".7"/><circle cx="14.5" cy="8" r=".7"/><path d="M12 10v1.5M10.5 13c.8.8 2.2.8 3 0M3 20c3 2 15 2 18 0"/></svg>'
+  otter:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 8a6 6 0 0 1 12 0v4a6 6 0 0 1-12 0z"/><circle cx="9.5" cy="8" r=".7"/><circle cx="14.5" cy="8" r=".7"/><path d="M12 10v1.5M10.5 13c.8.8 2.2.8 3 0M3 20c3 2 15 2 18 0"/></svg>',
+  camera:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 8h3l2-3h6l2 3h3v11H4z"/><circle cx="12" cy="13" r="3.5"/></svg>'
 };
 
 /* ---------------- data ---------------- */
@@ -261,7 +270,7 @@ const DAYS = [
 
 const SPOTS = [
  {icon:'deer',label:'A red deer'},
- {icon:'heron',label:'A heron on the Thames'},
+ {icon:'heron',label:'A heron - anywhere counts'},
  {icon:'windmill',label:'The windmill sails'},
  {icon:'otter',label:'An otter or meerkat'},
  {icon:'parakeet',label:'A green parakeet'},
@@ -271,8 +280,30 @@ const SPOTS = [
  {icon:'squirrel',label:'A cheeky squirrel'}
 ];
 
-/* ---------------- state (in memory) ---------------- */
-const state = { done:{}, spotted:new Set() };
+const ALBERT = [
+ {icon:'windmill',label:'Windmill in the background'},
+ {icon:'boat',label:'Thames in the background'},
+ {icon:'otter',label:'With a meerkat'},
+ {icon:'theatre',label:'At the theatre'},
+ {icon:'bus',label:'On a double-decker or the tube'}
+];
+
+/* ---------------- state ---------------- */
+const state = { done:{}, spotted:new Set(), albert:new Set() };
+
+/* ---------------- Supabase (shared family card) ----------------
+   1. Create a free project at supabase.com
+   2. Run the SQL provided alongside this file to create the table
+   3. Paste your Project URL and anon public key below              */
+const SUPABASE_URL = 'https://uyysedgdbhxcmhlooonw.supabase.co';
+const SUPABASE_ANON_KEY = 'sb_publishable_zNCnXxvLKT5WmREPHp6w6Q_jHraFV7z';
+let sb = null;
+try{
+  if(window.supabase && SUPABASE_URL.indexOf('https')===0){
+    sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+  }
+}catch(e){ sb = null; }
+let lastLocalChange = 0;
 
 /* ---------------- build tabs + panels ---------------- */
 const tabsEl = document.getElementById('tabs');
@@ -326,15 +357,33 @@ const sp = document.createElement('section');
 sp.className='panel'; sp.id='panel-spotters'; sp.role='tabpanel';
 sp.setAttribute('aria-labelledby','tab-spotters');
 sp.innerHTML = `
-  <div class="day-head"><span class="day-title">Spotter\u2019s Bingo</span><span class="day-date">All weekend</span></div>
-  <p class="spot-intro">Boden and Blair: tap a square when you spot the real thing. First to a full card chooses Saturday\u2019s pizza toppings.</p>
-  <div class="bingo">${SPOTS.map((s,i)=>`
-    <button class="bcell" data-i="${i}" aria-pressed="false">
-      ${I[s.icon]}${s.label}
-      <span class="stamp">${I.tick}</span>
-    </button>`).join('')}
+  <div class="day-head"><span class="day-title">Spotter\u2019s HQ</span><span class="day-date">All weekend</span></div>
+
+  <div class="spot-section">
+    <h2 class="spot-h">${I.parakeet} Nine things to spot</h2>
+    <p class="spot-intro">Boden and Blair: tap a square when you spot the real thing. This is one shared card for the whole team - a full house means the spotters choose Saturday\u2019s pizza toppings.</p>
+    <div class="bingo" id="grid-things">${SPOTS.map((s,i)=>`
+      <button class="bcell" data-grid="things" data-i="${i}" aria-pressed="false">
+        ${I[s.icon]}${s.label}
+        <span class="stamp">${I.tick}</span>
+      </button>`).join('')}
+    </div>
+    <div class="bingo-banner" id="banner-things">FULL CARD! Champion spotters of SW15.</div>
   </div>
-  <div class="bingo-banner" id="banner">FULL CARD! Champion spotter of SW15.</div>`;
+
+  <div class="spot-section">
+    <h2 class="spot-h">${I.camera} Albert\u2019s photo challenge</h2>
+    <p class="spot-intro">Albert is coming too. Get a photo of him in each of these places before home time on Sunday.</p>
+    <div class="bingo five" id="grid-albert">${ALBERT.map((s,i)=>`
+      <button class="bcell" data-grid="albert" data-i="${i}" aria-pressed="false">
+        ${I[s.icon]}${s.label}
+        <span class="stamp">${I.camera}</span>
+      </button>`).join('')}
+    </div>
+    <div class="bingo-banner" id="banner-albert">Albert\u2019s grand tour of London is complete.</div>
+  </div>
+
+  <p class="sync" id="sync">Shared card: connecting&hellip;</p>`;
 panelsEl.appendChild(sp);
 
 /* ---------------- interactions ---------------- */
@@ -356,13 +405,66 @@ panelsEl.addEventListener('click',e=>{
   }
   const cell = e.target.closest('.bcell');
   if(cell){
-    const i = cell.dataset.i;
-    if(state.spotted.has(i)){ state.spotted.delete(i); cell.classList.remove('spotted'); cell.setAttribute('aria-pressed','false'); }
-    else { state.spotted.add(i); cell.classList.add('spotted'); cell.setAttribute('aria-pressed','true'); }
-    if(state.spotted.size===SPOTS.length){ celebrate(); }
-    else { document.getElementById('banner').classList.remove('show'); }
+    const set = cell.dataset.grid==='things' ? state.spotted : state.albert;
+    if(set.has(cell.dataset.i)) set.delete(cell.dataset.i); else set.add(cell.dataset.i);
+    renderCells();
+    if(cell.dataset.grid==='things'){
+      if(state.spotted.size===SPOTS.length) celebrate('banner-things');
+      else document.getElementById('banner-things').classList.remove('show');
+    } else {
+      document.getElementById('banner-albert').classList.toggle('show', state.albert.size===ALBERT.length);
+    }
+    lastLocalChange = Date.now();
+    saveState();
   }
 });
+
+function renderCells(){
+  document.querySelectorAll('.bcell').forEach(c=>{
+    const set = c.dataset.grid==='things' ? state.spotted : state.albert;
+    const on = set.has(c.dataset.i);
+    c.classList.toggle('spotted', on);
+    c.setAttribute('aria-pressed', on);
+  });
+}
+
+function setSync(msg, ok){
+  const el = document.getElementById('sync');
+  if(el) el.innerHTML = ok ? 'Shared card: <b>'+msg+'</b>' : msg;
+}
+
+async function loadState(){
+  if(!sb){ setSync('Supabase is not connected yet, so stamps stay on this device only.'); return; }
+  try{
+    const {data, error} = await sb.from('weekend').select('spotted,albert').eq('id','family').single();
+    if(error) throw error;
+    state.spotted = new Set((data.spotted||[]).map(String));
+    state.albert = new Set((data.albert||[]).map(String));
+    renderCells();
+    document.getElementById('banner-things').classList.toggle('show', state.spotted.size===SPOTS.length);
+    document.getElementById('banner-albert').classList.toggle('show', state.albert.size===ALBERT.length);
+    setSync('up to date', true);
+  }catch(e){
+    setSync('Could not reach Supabase, so stamps stay on this device for now.');
+  }
+}
+
+let saveTimer = null;
+function saveState(){
+  if(!sb) return;
+  clearTimeout(saveTimer);
+  saveTimer = setTimeout(async ()=>{
+    try{
+      const {error} = await sb.from('weekend')
+        .update({spotted:[...state.spotted], albert:[...state.albert], updated_at:new Date().toISOString()})
+        .eq('id','family');
+      if(error) throw error;
+      setSync('saved', true);
+    }catch(e){
+      setSync('Save failed. Check the connection and tap again.');
+    }
+  }, 400);
+}
 
 function updateProgress(dayId){
   const d = DAYS.find(x=>x.id===dayId);
@@ -374,8 +476,8 @@ function updateProgress(dayId){
     doneCount+' of '+d.stops.length+' done';
 }
 
-function celebrate(){
-  document.getElementById('banner').classList.add('show');
+function celebrate(bannerId){
+  document.getElementById(bannerId).classList.add('show');
   if(window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
   const colours=['#F3B33C','#33613F','#3A6B9F','#D4593F'];
   for(let i=0;i<36;i++){
@@ -442,6 +544,8 @@ function highlightNow(now){
   selectTab(def);
   tick();
   setInterval(tick,1000);
+  loadState();
+  setInterval(()=>{ if(Date.now()-lastLocalChange > 8000) loadState(); }, 15000);
 })();
 </script>
 </body>
