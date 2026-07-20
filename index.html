@@ -168,6 +168,40 @@ nav{
 .sync b{color:var(--green)}
 .confetti{position:fixed;top:-12px;border-radius:3px;z-index:50;pointer-events:none}
 
+/* ---------- build-an-albert ---------- */
+.albert-stage{
+  background:var(--card);border-radius:var(--radius);padding:16px 10px 12px;
+  margin:8px 0 4px;box-shadow:0 2px 0 rgba(36,49,32,.07);
+}
+.albert-fig{width:min(230px,62vw);margin:0 auto;display:block}
+.albert-fig svg{width:100%;height:auto;display:block;overflow:visible}
+.albert-fig.wobble{animation:wobble 1.2s ease}
+@keyframes wobble{
+  0%,100%{transform:rotate(0)}
+  20%{transform:rotate(-4deg)}
+  40%{transform:rotate(4deg)}
+  60%{transform:rotate(-3deg)}
+  80%{transform:rotate(2deg)}
+}
+.albert-cap{text-align:center;font-weight:800;color:var(--muted);font-size:.85rem;margin-top:8px}
+.ghost circle,.ghost rect{fill:none;stroke:var(--line);stroke-width:2;stroke-dasharray:5 5}
+.piece{opacity:0;transform:scale(.2);transform-box:fill-box;transform-origin:center}
+.piece.on{opacity:1;transform:scale(1)}
+.piece.pop{animation:piecePop .55s cubic-bezier(.34,1.56,.64,1) both}
+@keyframes piecePop{
+  0%{opacity:0;transform:scale(.2)}
+  100%{opacity:1;transform:scale(1)}
+}
+.chip{
+  position:fixed;left:50%;transform:translateX(-50%);bottom:18px;z-index:40;
+  background:var(--green-deep);color:#fff;border:none;border-radius:999px;
+  padding:11px 18px;font:800 .85rem 'Nunito',sans-serif;cursor:pointer;
+  display:none;align-items:center;gap:8px;box-shadow:0 4px 14px rgba(0,0,0,.28);
+}
+.chip.show{display:flex;animation:chipIn .3s ease}
+.chip svg{width:16px;height:16px;color:var(--sun)}
+@keyframes chipIn{from{opacity:0;transform:translate(-50%,10px)}to{opacity:1;transform:translate(-50%,0)}}
+
 /* ---------- footer ---------- */
 footer{margin-top:34px;text-align:center;color:var(--muted);font-size:.8rem}
 footer p+p{margin-top:4px}
@@ -231,12 +265,86 @@ const I = {
   trunchbull:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="7" r="3.5"/><path d="M5 21c0-4 3-7 7-7s7 3 7 7"/><path d="M9 6h6M12 3.5V2"/></svg>',
   otter:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 8a6 6 0 0 1 12 0v4a6 6 0 0 1-12 0z"/><circle cx="9.5" cy="8" r=".7"/><circle cx="14.5" cy="8" r=".7"/><path d="M12 10v1.5M10.5 13c.8.8 2.2.8 3 0M3 20c3 2 15 2 18 0"/></svg>',
   camera:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 8h3l2-3h6l2 3h3v11H4z"/><circle cx="12" cy="13" r="3.5"/></svg>',
-  kingfisher:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5a4.5 4.5 0 0 1 4 4.5c0 4-3 7-7 7l-4 4v-5c-2-1-3-3-3-5a8 8 0 0 1 10-5.5z"/><path d="M15 8l7 2-7 1"/><circle cx="14" cy="7.5" r=".6"/></svg>',
+  swan:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M13 5c1-1.6 3.2-1.9 4.6-.7 1.3 1.1 1.4 3 .4 4.7-.8 1.4-1.5 2.5-1.5 4v2"/><path d="M17.5 3.8l3.5.9-3 1.1"/><path d="M3 13c1 4.5 4.5 7 9.5 7 2.8 0 4.5-1.4 4.5-3.6"/><path d="M3 13c2 1 4.5 1 6.5-.2"/><circle cx="16" cy="4.8" r=".5"/></svg>',
   beetle:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="12" cy="14" rx="5" ry="7"/><path d="M12 9v10"/><path d="M9 7l-2-4M15 7l2-4M7 3l1.5 2M17 3l-1.5 2"/><path d="M7 12H4M7 16H4M17 12h3M17 16h3"/></svg>',
   woodpecker:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2v20"/><path d="M10 8c0-2 1.5-3.5 3.5-3.5S17 6 17 8c0 3-2 4-3 6l-1 6h-2l.5-5c-1-1-1.5-2-1.5-7z"/><path d="M13 6L6 8"/><circle cx="14" cy="6.5" r=".5"/></svg>',
   falcon:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 8C9 4 5 3 2 4c3 2 4 5 7 6"/><path d="M12 8c3-4 7-5 10-4-3 2-4 5-7 6"/><path d="M9 10c0 5 1 8 3 11 2-3 3-6 3-11"/><circle cx="12" cy="9" r=".5"/></svg>',
-  cormorant:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 10c-2 0-3 2-3 5v6h6v-6c0-3-1-5-3-5z"/><path d="M9 12C6 12 3 10 2 7c3 0 6 1 8 3M15 12c3 0 6-2 7-5-3 0-6 1-8 3"/><path d="M12 10V7l2-2"/><circle cx="12.6" cy="6" r=".4"/></svg>'
+  cormorant:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 10c-2 0-3 2-3 5v6h6v-6c0-3-1-5-3-5z"/><path d="M9 12C6 12 3 10 2 7c3 0 6 1 8 3M15 12c3 0 6-2 7-5-3 0-6 1-8 3"/><path d="M12 10V7l2-2"/><circle cx="12.6" cy="6" r=".4"/></svg>',
+  star:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><path d="M12 3l2.6 5.6 5.9.9-4.2 4 1 6L12 16.6 6.7 19.5l1-6-4.2-4 5.9-.9z"/></svg>'
 };
+
+/* ---------------- Albert the wind-up gingerbread man ---------------- */
+const TOTAL_PIECES = 14;
+const ALBERT_SVG = `
+<svg viewBox="0 0 200 224" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Albert the wind-up gingerbread man, revealed piece by piece">
+  <g class="ghost">
+    <circle cx="100" cy="66" r="33"/>
+    <rect x="72" y="96" width="56" height="64" rx="26"/>
+    <rect x="30" y="102" width="48" height="20" rx="10"/>
+    <rect x="122" y="102" width="48" height="20" rx="10"/>
+    <rect x="78" y="150" width="18" height="46" rx="9"/>
+    <rect x="104" y="150" width="18" height="46" rx="9"/>
+  </g>
+  <g id="p0" class="piece">
+    <rect x="68" y="192" width="30" height="12" rx="4" fill="#2E2E2E"/>
+    <rect x="62" y="204" width="42" height="6" rx="3" fill="#2E2E2E"/>
+  </g>
+  <g id="p1" class="piece">
+    <rect x="102" y="192" width="30" height="12" rx="4" fill="#2E2E2E"/>
+    <rect x="96" y="204" width="42" height="6" rx="3" fill="#2E2E2E"/>
+  </g>
+  <g id="p2" class="piece">
+    <rect x="78" y="150" width="18" height="46" rx="9" fill="#DDA15E" stroke="#B0703C" stroke-width="2.5"/>
+  </g>
+  <g id="p3" class="piece">
+    <rect x="104" y="150" width="18" height="46" rx="9" fill="#DDA15E" stroke="#B0703C" stroke-width="2.5"/>
+  </g>
+  <g id="p4" class="piece">
+    <rect x="72" y="96" width="56" height="64" rx="26" fill="#DDA15E" stroke="#B0703C" stroke-width="2.5"/>
+  </g>
+  <g id="p5" class="piece">
+    <rect x="84" y="100" width="8" height="34" fill="#D64541"/>
+    <rect x="108" y="100" width="8" height="34" fill="#D64541"/>
+    <rect x="74" y="128" width="52" height="32" rx="12" fill="#D64541" stroke="#B23530" stroke-width="2"/>
+    <circle cx="88" cy="133" r="2.6" fill="#FFF7EE"/>
+    <circle cx="112" cy="133" r="2.6" fill="#FFF7EE"/>
+  </g>
+  <g id="p6" class="piece">
+    <rect x="30" y="102" width="48" height="20" rx="10" fill="#DDA15E" stroke="#B0703C" stroke-width="2.5"/>
+  </g>
+  <g id="p7" class="piece">
+    <rect x="122" y="102" width="48" height="20" rx="10" fill="#DDA15E" stroke="#B0703C" stroke-width="2.5"/>
+  </g>
+  <g id="p8" class="piece">
+    <circle cx="100" cy="66" r="33" fill="#DDA15E" stroke="#B0703C" stroke-width="2.5"/>
+  </g>
+  <g id="p9" class="piece">
+    <circle cx="89" cy="61" r="3.2" fill="#2E2E2E"/>
+    <circle cx="111" cy="61" r="3.2" fill="#2E2E2E"/>
+    <circle cx="82" cy="71" r="4.5" fill="#F2A7B3"/>
+    <circle cx="118" cy="71" r="4.5" fill="#F2A7B3"/>
+    <path d="M90 77 Q100 85 110 77" fill="none" stroke="#2E2E2E" stroke-width="2.5" stroke-linecap="round"/>
+  </g>
+  <g id="p10" class="piece" fill="none" stroke="#FFF7EE" stroke-width="3.2" stroke-linecap="round">
+    <path d="M36 112 q5 -7 10 0 t10 0 t10 0"/>
+    <path d="M134 112 q5 -7 10 0 t10 0"/>
+  </g>
+  <g id="p11" class="piece">
+    <path d="M100 97 l-15 -7 v14 z" fill="#3E8E4F" stroke="#2F6B3C" stroke-width="1.5"/>
+    <path d="M100 97 l15 -7 v14 z" fill="#3E8E4F" stroke="#2F6B3C" stroke-width="1.5"/>
+    <circle cx="100" cy="97" r="4" fill="#2F6B3C"/>
+  </g>
+  <g id="p12" class="piece">
+    <rect x="124" y="127" width="26" height="7" rx="3.5" fill="#9AA0A6" stroke="#6F757B" stroke-width="1.5"/>
+    <rect x="147" y="113" width="9" height="35" rx="4.5" fill="#C7CBD0" stroke="#6F757B" stroke-width="1.5"/>
+  </g>
+  <g id="p13" class="piece">
+    <path d="M68 48 C70 20 96 12 108 15 C126 19 134 34 134 48 Z" fill="#D64541" stroke="#B23530" stroke-width="2"/>
+    <path d="M124 22 C138 18 146 26 145 36" fill="none" stroke="#D64541" stroke-width="9" stroke-linecap="round"/>
+    <circle cx="147" cy="39" r="7" fill="#FFF7EE" stroke="#E4D9C8" stroke-width="1.5"/>
+    <rect x="62" y="44" width="78" height="13" rx="6.5" fill="#FFF7EE" stroke="#E4D9C8" stroke-width="1.5"/>
+  </g>
+</svg>`;
 
 /* ---------------- data ---------------- */
 const DAYS = [
@@ -275,7 +383,7 @@ const DAYS = [
 const SPOTS = [
  {icon:'deer',label:'A deer'},
  {icon:'heron',label:'A heron'},
- {icon:'kingfisher',label:'A swan'},
+ {icon:'swan',label:'A swan'},
  {icon:'beetle',label:'A big beetle'},
  {icon:'parakeet',label:'A green parakeet'},
  {icon:'woodpecker',label:'A woodpecker (just hearing it is ok!)'},
@@ -363,9 +471,14 @@ sp.setAttribute('aria-labelledby','tab-spotters');
 sp.innerHTML = `
   <div class="day-head"><span class="day-title">Spotter\u2019s HQ</span><span class="day-date">All weekend</span></div>
 
+  <div class="albert-stage" id="albertStage">
+    <div class="albert-fig" id="albertFig">${ALBERT_SVG}</div>
+    <p class="albert-cap" id="albertCap"></p>
+  </div>
+
   <div class="spot-section">
     <h2 class="spot-h">${I.parakeet} Nine things to spot</h2>
-    <p class="spot-intro">Boden and Blair: tap a square when you spot the real thing. This is one shared card for the whole team.</p>
+    <p class="spot-intro">Boden and Blair: tap a square when you spot the real thing. This is one shared card for the whole team. Every stamp builds a piece of Albert.</p>
     <div class="bingo" id="grid-things">${SPOTS.map((s,i)=>`
       <button class="bcell" data-grid="things" data-i="${i}" aria-pressed="false">
         ${I[s.icon]}${s.label}
@@ -377,7 +490,7 @@ sp.innerHTML = `
 
   <div class="spot-section">
     <h2 class="spot-h">${I.camera} Albert\u2019s photo challenge</h2>
-    <p class="spot-intro">We hope Albert is coming too?! Get a photo of him in each of these places before home time on Sunday.</p>
+    <p class="spot-intro">We hope Albert is coming too?! Get a photo of him in each of these places before home time on Sunday. These stamps build him as well.</p>
     <div class="bingo five" id="grid-albert">${ALBERT.map((s,i)=>`
       <button class="bcell" data-grid="albert" data-i="${i}" aria-pressed="false">
         ${I[s.icon]}${s.label}
@@ -387,7 +500,8 @@ sp.innerHTML = `
     <div class="bingo-banner" id="banner-albert">Albert\u2019s grand tour of London is complete.</div>
   </div>
 
-  <p class="sync" id="sync">Shared card: connecting&hellip;</p>`;
+  <p class="sync" id="sync">Shared card: connecting&hellip;</p>
+  <button class="chip" id="chip">${I.star} New piece found - see Albert grow</button>`;
 panelsEl.appendChild(sp);
 
 /* ---------------- interactions ---------------- */
@@ -420,6 +534,7 @@ panelsEl.addEventListener('click',e=>{
     }
     lastLocalChange = Date.now();
     saveState();
+    albertSync();
   }
 });
 
@@ -448,6 +563,7 @@ async function loadState(){
     document.getElementById('banner-things').classList.toggle('show', state.spotted.size===SPOTS.length);
     document.getElementById('banner-albert').classList.toggle('show', state.albert.size===ALBERT.length);
     setSync('up to date', true);
+    albertSync();
   }catch(e){
     setSync('Could not reach Supabase, so stamps stay on this device for now.');
   }
@@ -497,6 +613,94 @@ function celebrate(bannerId){
   }
 }
 
+/* ---------------- build-an-albert reveal ---------------- */
+const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+let revealedPieces = 0;
+let albertVisible = false;
+let albertInited = false;
+let playTimer = null;
+
+function targetPieces(){
+  return Math.min(TOTAL_PIECES, state.spotted.size + state.albert.size);
+}
+
+function setPiece(i, on, popIn){
+  const el = document.getElementById('p'+i);
+  if(!el) return;
+  el.classList.toggle('on', on);
+  el.classList.toggle('pop', !!popIn && on);
+  if(!on) el.classList.remove('pop');
+}
+
+function updateAlbertCaption(){
+  const cap = document.getElementById('albertCap');
+  if(!cap) return;
+  if(revealedPieces >= TOTAL_PIECES){
+    cap.textContent = 'Albert is fully wound up! Champion spotters.';
+  } else if(revealedPieces === 0){
+    cap.textContent = 'Stamp a square below to start building Albert. 14 pieces to find.';
+  } else {
+    cap.textContent = revealedPieces + ' of ' + TOTAL_PIECES + ' pieces found';
+  }
+}
+
+function updateChip(){
+  const pending = targetPieces() - revealedPieces;
+  document.getElementById('chip').classList.toggle('show', pending > 0 && !albertVisible);
+}
+
+function wobble(){
+  if(reduceMotion) return;
+  const fig = document.getElementById('albertFig');
+  fig.classList.remove('wobble');
+  void fig.offsetWidth;
+  fig.classList.add('wobble');
+}
+
+function playQueue(){
+  if(playTimer) return;
+  const step = ()=>{
+    const t = targetPieces();
+    if(revealedPieces >= t){
+      playTimer = null;
+      updateChip();
+      if(revealedPieces === TOTAL_PIECES) wobble();
+      return;
+    }
+    setPiece(revealedPieces, true, true);
+    revealedPieces++;
+    updateAlbertCaption();
+    playTimer = setTimeout(step, 450);
+  };
+  step();
+}
+
+function albertSync(){
+  const t = targetPieces();
+  if(t < revealedPieces){
+    for(let i=t; i<revealedPieces; i++) setPiece(i, false);
+    revealedPieces = t;
+    updateAlbertCaption();
+    updateChip();
+    return;
+  }
+  if(t > revealedPieces){
+    if(!albertInited || reduceMotion){
+      for(let i=revealedPieces; i<t; i++) setPiece(i, true);
+      const wasInited = albertInited;
+      revealedPieces = t;
+      updateAlbertCaption();
+      updateChip();
+      if(revealedPieces === TOTAL_PIECES && wasInited) wobble();
+      return;
+    }
+    if(albertVisible) playQueue();
+    else updateChip();
+    return;
+  }
+  updateChip();
+}
+
 /* ---------------- countdown + now/next ---------------- */
 const START = new Date(2026,6,23,17,0,0);
 const END   = new Date(2026,6,26,15,0,0);
@@ -535,7 +739,7 @@ function highlightNow(now){
   const next = d.stops.findIndex(s=>(s.h*60+s.m)>=mins);
   const idx = next===-1 ? d.stops.length-1 : next;
   const li = document.getElementById(todayId+'-'+idx);
-  if(li && !li.classList.contains('done')) li.classList.add('now');
+  if(li && !li.classList.contains('now')) li.classList.add('now');
 }
 
 /* default tab: today's day during the visit, otherwise Thursday */
@@ -548,7 +752,24 @@ function highlightNow(now){
   selectTab(def);
   tick();
   setInterval(tick,1000);
-  loadState();
+  updateAlbertCaption();
+
+  /* watch Albert: queued pieces reveal only when he is on screen */
+  const stage = document.getElementById('albertStage');
+  const obs = new IntersectionObserver(entries=>{
+    entries.forEach(en=>{ albertVisible = en.isIntersecting; });
+    if(albertVisible && !reduceMotion && targetPieces() > revealedPieces) playQueue();
+    updateChip();
+  }, {threshold:.6});
+  obs.observe(stage);
+
+  /* nudge chip scrolls up to Albert */
+  document.getElementById('chip').addEventListener('click',()=>{
+    selectTab('spotters');
+    stage.scrollIntoView({behavior: reduceMotion ? 'auto' : 'smooth', block:'center'});
+  });
+
+  loadState().then(()=>{ albertInited = true; });
   setInterval(()=>{ if(Date.now()-lastLocalChange > 8000) loadState(); }, 15000);
 })();
 </script>
