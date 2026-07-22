@@ -234,7 +234,6 @@ nav{
 .badge{display:inline-block;font:800 .62rem 'Nunito',sans-serif;letter-spacing:.06em;border-radius:5px;padding:1px 6px;margin-left:5px;vertical-align:1px}
 .badge.gf{background:#E4F0E0;color:var(--green-deep)}
 .badge.v{background:#E3ECF6;color:var(--thames)}
-.badge.k{background:#FBEED0;color:#8A6510}
 .badge.ahead{background:var(--sun);color:var(--green-deep)}
 .orderers{font-size:.78rem;font-weight:800;color:var(--thames);margin-top:3px}
 .pass{background:var(--green-deep);color:#F4F8EE;border-radius:var(--radius);padding:16px;margin-top:24px}
@@ -249,6 +248,9 @@ nav{
 .pass-empty{font-size:.88rem;color:#BFD6B5;margin-top:8px}
 .copybtn{margin-top:16px;background:var(--sun);color:var(--green-deep);border:none;border-radius:999px;font:800 .85rem 'Nunito',sans-serif;padding:10px 18px;cursor:pointer}
 .copybtn:hover{filter:brightness(1.05)}
+.drinks{list-style:none;display:grid;grid-template-columns:1fr 1fr;gap:2px 16px;margin-top:8px}
+.drinks li{font-size:.88rem;font-weight:600;padding:4px 0;border-bottom:1px dashed var(--line)}
+@media (max-width:430px){.drinks{grid-template-columns:1fr}}
 
 /* ---------- footer ---------- */
 footer{margin-top:34px;text-align:center;color:var(--muted);font-size:.8rem}
@@ -318,7 +320,9 @@ const I = {
   woodpecker:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2v20"/><path d="M10 8c0-2 1.5-3.5 3.5-3.5S17 6 17 8c0 3-2 4-3 6l-1 6h-2l.5-5c-1-1-1.5-2-1.5-7z"/><path d="M13 6L6 8"/><circle cx="14" cy="6.5" r=".5"/></svg>',
   falcon:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 8C9 4 5 3 2 4c3 2 4 5 7 6"/><path d="M12 8c3-4 7-5 10-4-3 2-4 5-7 6"/><path d="M9 10c0 5 1 8 3 11 2-3 3-6 3-11"/><circle cx="12" cy="9" r=".5"/></svg>',
   cormorant:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 10c-2 0-3 2-3 5v6h6v-6c0-3-1-5-3-5z"/><path d="M9 12C6 12 3 10 2 7c3 0 6 1 8 3M15 12c3 0 6-2 7-5-3 0-6 1-8 3"/><path d="M12 10V7l2-2"/><circle cx="12.6" cy="6" r=".4"/></svg>',
-  star:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><path d="M12 3l2.6 5.6 5.9.9-4.2 4 1 6L12 16.6 6.7 19.5l1-6-4.2-4 5.9-.9z"/></svg>'
+  star:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><path d="M12 3l2.6 5.6 5.9.9-4.2 4 1 6L12 16.6 6.7 19.5l1-6-4.2-4 5.9-.9z"/></svg>',
+  cheese:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 9L12 4 3 9v10h18z"/><path d="M3 9h18"/><circle cx="8" cy="14" r="1.3"/><circle cx="14" cy="16.5" r="1.1"/><circle cx="16.5" cy="12.5" r=".9"/></svg>',
+  glass:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 3h14l-7 8z"/><path d="M12 11v8M8 21h8"/><path d="M7.5 6h9"/></svg>'
 };
 
 /* ---------------- Albert the wind-up gingerbread man ---------------- */
@@ -400,7 +404,7 @@ const DAYS = [
   stops:[
    {h:17,m:0,time:'5.00pm',icon:'home',name:'Welcome to Putney',detail:'Bags down, drinks and dinner for kids, and a breather after the journey.'},
    {h:18,m:0,time:'6.00pm',icon:'windmill',name:'Walk to the windmill',detail:'A gentle stroll across Putney Heath to the Wimbledon Common windmill. This is a sneak preview of Saturday morning, so scouts should memorise the route.',map:'Wimbledon Windmill, London'},
-   {h:19,m:15,time:'7.15pm',icon:'pot',name:'Dinner at home',detail:'Rob cooks. Will lands home from the office at about 7.00pm, just in time to be given a job.'}
+   {h:19,m:30,time:'7.30pm',icon:'pot',name:'Dinner at home',detail:'Kids eat at 5.30pm; adults at 7.30pm. Rob cooks. Will lands home from the office at about 7.00pm, just in time to be given a job.'}
  ]},
  {id:'fri', tab:'Fri', icon:'boat', title:'River day', date:'Friday 24th July',
   stops:[
@@ -451,64 +455,65 @@ const ALBERT = [
 const PEOPLE = ['Rachael','Michael','Boden','Blair','Rob','Will'];
 
 const MEALS = [
- {id:'thu-dinner', name:'Thursday dinner', when:'Thu 7.15pm', icon:'pot',
-  note:'Cheese board follows later in the evening: Haute Fromagerie selection, biscuits for cheese, gluten-free oatcakes, grapes and pickled red onion. No ordering required, it simply appears.',
+ {id:'thu-dinner', d:23, name:'Thursday dinner', when:'Thu 5.30 & 7.30pm', icon:'pot',
+  note:'Two sittings: kids at 5.30pm, adults at 7.30pm once Will is home and has been given a job.',
   options:[
-   {id:'kids-pasta', label:'Tomato pasta: fusilli with roasted garlic sauce and cucumber sticks', tags:['K','V']},
+   {id:'kids-pasta', label:'Tomato pasta: fusilli with roasted garlic sauce and cucumber sticks', tags:['V']},
    {id:'goujons', label:'Chicken goujons with salt and pepper wedges and lamb\u2019s lettuce', tags:['GF']},
    {id:'tenders', label:'Buttermilk chicken tenders with wedges and lamb\u2019s lettuce', tags:[]},
    {id:'veg-fusilli', label:'Fusilli with artichokes, olives, rocket and vine tomatoes', tags:['V']},
-   {id:'choc-banana', label:'Chocolate-dipped banana for pudding', tags:['GF','V','K']}
+   {id:'choc-banana', label:'Chocolate-dipped banana for pudding', tags:['GF','V']}
   ]},
- {id:'fri-breakfast', name:'Friday breakfast', when:'Fri before 9.00am', icon:'cup',
+ {id:'thu-cheese', d:23, name:'The cheese board', when:'Thu later on', icon:'cheese', info:true,
+  note:'Haute Fromagerie selection with biscuits for cheese, gluten-free oatcakes, grapes and pickled red onion. No ordering required, it simply appears once the kids are in bed.'},
+ {id:'fri-breakfast', d:24, name:'Friday breakfast', when:'Fri before 9.00am', icon:'cup',
   note:'Quick, before the Clubhouse. Apple and blood orange juice on the table for everyone.',
   options:[
    {id:'oats', label:'Overnight oats with blueberries, banana and peanut butter', tags:['V'], ahead:true},
    {id:'granola', label:'Granola with Greek yoghurt and berries', tags:['V','GF']},
-   {id:'porridge', label:'Porridge with sliced banana', tags:['V','K']},
+   {id:'porridge', label:'Porridge with sliced banana', tags:['V']},
    {id:'hxb', label:'Toasted gluten-free hot cross bun', tags:['GF','V']}
   ]},
- {id:'fri-picnic', name:'Battersea picnic', when:'Fri lunch', icon:'park', info:true,
+ {id:'fri-picnic', d:24, name:'Battersea picnic', when:'Fri lunch', icon:'park', info:true,
   note:'From home: grapes, strawberries, nectarines, cucumber sticks, and oatcakes with cheese. The substantial part is bought on the day, so save some appetite.'},
- {id:'fri-dinner', name:'Friday dinner: stir fry night', when:'Fri evening', icon:'pot',
-  note:'One wok, many noodles. Vegetables, Tofoo, soy and sesame, finished with pickled red onion.',
+ {id:'fri-dinner', d:24, name:'Friday dinner: stir fry night', when:'Fri 6.30 & 7.30pm', icon:'pot',
+  note:'One wok, many noodles. Kids sit at 6.30pm, adults at 7.30pm. Vegetables, Tofoo, soy and sesame, finished with pickled red onion.',
   options:[
    {id:'sf-rice', label:'Stir fry with rice noodles', tags:['GF']},
    {id:'sf-lentil', label:'Stir fry with high-protein lentil noodles', tags:['V']},
    {id:'sf-chicken', label:'Stir fry with lentil noodles and chicken tenders', tags:[]},
-   {id:'kids-tenders', label:'Chicken tenders with wedges, cucumber and vine tomatoes', tags:['K']}
+   {id:'kids-tenders', label:'Chicken tenders with wedges, cucumber and vine tomatoes', tags:[]}
   ]},
- {id:'sat-breakfast', name:'Saturday breakfast', when:'Sat before 8.30am', icon:'run',
+ {id:'sat-breakfast', d:25, name:'Saturday breakfast', when:'Sat before 8.30am', icon:'run',
   note:'Pre-parkrun. Kept deliberately light: nothing to regret at kilometre two.',
   options:[
    {id:'mini-oats', label:'Mini overnight oats', tags:['V'], ahead:true},
-   {id:'banana-yog', label:'Banana and a small yoghurt', tags:['GF','V','K']},
-   {id:'juice-only', label:'Juice only, running on ambition', tags:['GF','V','K']}
+   {id:'banana-yog', label:'Banana and a small yoghurt', tags:['GF','V']},
+   {id:'juice-only', label:'Juice only, running on ambition', tags:['GF','V']}
   ]},
- {id:'sat-brunch', name:'Saturday brunch', when:'Sat post-parkrun', icon:'roast',
+ {id:'sat-brunch', d:25, name:'Saturday brunch', when:'Sat post-parkrun', icon:'roast',
   note:'The victory meal. Eggs are the centrepiece, there are 24 of them.',
   options:[
    {id:'scrambled', label:'Scrambled eggs with avocado, vine tomatoes and rocket', tags:['GF','V']},
    {id:'poached', label:'Poached eggs with avocado, vine tomatoes and rocket', tags:['GF','V']},
    {id:'gf-bagel', label:'Gluten-free chia seed bagel with eggs', tags:['GF','V']},
-   {id:'fishcakes', label:'Cod fishcakes with poached eggs', tags:['GF']},
-   {id:'kids-eggs', label:'Plain scrambled eggs, or granola for refuseniks', tags:['K']}
+   {id:'kids-eggs', label:'Plain scrambled eggs, or granola for refuseniks', tags:[]}
   ]},
- {id:'sat-dinner', name:'Saturday dinner', when:'Sat 6.30pm', icon:'pizza', info:true,
+ {id:'sat-dinner', d:25, name:'Saturday dinner', when:'Sat 6.30pm, one sitting for all', icon:'pizza', info:true,
   note:'Piccolo\u2019s pizza, ordered in and eaten on the sofa. The bingo winner chooses the toppings, as agreed.'},
- {id:'sun-breakfast', name:'Sunday breakfast', when:'Sun morning', icon:'croissant',
+ {id:'sun-breakfast', d:26, name:'Sunday breakfast', when:'Sun morning', icon:'croissant',
   note:'A send-off before Richmond Park and the Telegraph. Yoghurt, berries and juice for all.',
   options:[
    {id:'twist', label:'Belgian chocolate twist, baked fresh from frozen (five available)', tags:['V']},
    {id:'manna-dew', label:'Manna Dew pastry, wisely saved from Saturday', tags:['GF']},
    {id:'hxb2', label:'Toasted gluten-free hot cross bun', tags:['GF','V']},
    {id:'oats2', label:'Overnight oats', tags:['V'], ahead:true},
-   {id:'porridge2', label:'Porridge', tags:['V','K']}
+   {id:'porridge2', label:'Porridge', tags:['V']}
   ]},
- {id:'sun-lunch', name:'Sunday lunch', when:'Sun 12.00pm', icon:'roast', info:true,
+ {id:'sun-lunch', d:26, name:'Sunday lunch', when:'Sun 12.00pm', icon:'roast', info:true,
   note:'The Telegraph on the heath. Yorkshire puddings the size of Blair\u2019s head. The kitchen at home is closed and the chef is off duty.'}
 ];
-const BADGE_CLASS = {GF:'gf', V:'v', K:'k'};
+const BADGE_CLASS = {GF:'gf', V:'v'};
 
 /* ---------------- state ---------------- */
 const state = { done:{}, spotted:new Set(), albert:new Set(), orders:{} };
@@ -624,7 +629,7 @@ panelsEl.appendChild(sp);
 
 /* ---------------- menu panel ---------------- */
 function badgeHtml(o){
-  let b = (o.tags||[]).map(t=>`<span class="badge ${BADGE_CLASS[t]}">${t==='K'?'KIDS':t}</span>`).join('');
+  let b = (o.tags||[]).map(t=>`<span class="badge ${BADGE_CLASS[t]}">${t}</span>`).join('');
   if(o.ahead) b += '<span class="badge ahead">ORDER BY BEDTIME</span>';
   return b;
 }
@@ -650,6 +655,23 @@ mp.innerHTML = `
         <span class="opt-body">${o.label}${badgeHtml(o)}<div class="orderers" data-orderers></div></span>
       </button>`).join('')}
   </div>`).join('')}
+
+  <div class="meal info" id="meal-bar">
+    <div class="meal-top">${I.glass}<span class="meal-name">The bar</span><span class="meal-when">All weekend</span></div>
+    <p class="meal-note">Open on request, no ordering ahead and no tab. In stock:</p>
+    <ul class="drinks">
+      <li>Apple juice</li>
+      <li>Blood orange juice</li>
+      <li>Soda water</li>
+      <li>Alcohol-free gin &amp; tonic</li>
+      <li>Alcohol-free beer</li>
+      <li>Diet Coke</li>
+      <li>Tap water, on draught</li>
+      <li>Sparkling wine</li>
+      <li>Margarita, spicy or non</li>
+      <li>Alcoholic beer</li>
+    </ul>
+  </div>
 
   <div class="pass" id="pass">
     <h2>${I.roast} Chef\u2019s pass</h2>
@@ -732,6 +754,15 @@ function toggleOrder(mealId, optId){
   saveState();
 }
 
+function prepLabel(m){
+  const now = new Date();
+  const inVisitWeek = now.getFullYear()===2026 && now.getMonth()===6;
+  const prepDay = m.d - 1;
+  if(inVisitWeek && now.getDate()===prepDay) return 'prep tonight';
+  if(inVisitWeek && now.getDate()>=m.d) return 'made last night, one hopes';
+  return 'prep '+new Date(2026,6,prepDay).toLocaleDateString('en-GB',{weekday:'long'})+' evening';
+}
+
 function ordersFor(mealId, optId){
   const meal = state.orders[mealId] || {};
   return PEOPLE.filter(p=>(meal[p]||[]).indexOf(optId)>-1);
@@ -760,7 +791,7 @@ function renderPass(){
     const lines = m.options.map(o=>{
       const names = ordersFor(m.id, o.id);
       if(!names.length) return '';
-      return `<li><b>${names.length}\u00d7</b> ${o.label.split(':')[0].split(',')[0]} \u2014 ${names.join(', ')}${o.ahead?' <b>(prep tonight)</b>':''}</li>`;
+      return `<li><b>${names.length}\u00d7</b> ${o.label.split(':')[0].split(',')[0]} \u2014 ${names.join(', ')}${o.ahead?' <b>('+prepLabel(m)+')</b>':''}</li>`;
     }).join('');
     if(lines) html += `<div class="pass-meal"><div class="pm-name">${m.name} \u00b7 ${m.when}</div><ul>${lines}</ul></div>`;
   });
@@ -775,7 +806,7 @@ function passText(){
     const lines = m.options.map(o=>{
       const names = ordersFor(m.id, o.id);
       if(!names.length) return '';
-      return '  - '+names.length+'x '+o.label+(o.ahead?' [prep the night before]':'')+' \u2014 '+names.join(', ');
+      return '  - '+names.length+'x '+o.label+(o.ahead?' ['+prepLabel(m)+']':'')+' \u2014 '+names.join(', ');
     }).filter(Boolean);
     if(lines.length){ any = true; out += '\n'+m.name+' ('+m.when+')\n'+lines.join('\n')+'\n'; }
   });
