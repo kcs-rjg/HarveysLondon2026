@@ -205,6 +205,51 @@ nav{
 .chip svg{width:16px;height:16px;color:var(--sun)}
 @keyframes chipIn{from{opacity:0;transform:translate(-50%,10px)}to{opacity:1;transform:translate(-50%,0)}}
 
+/* ---------- menu ---------- */
+.tab.menu{border-color:var(--thames)}
+.tab.menu[aria-selected="true"]{background:var(--thames);border-color:var(--thames);color:#fff}
+.who{background:var(--card);border-radius:var(--radius);padding:12px 14px;margin:6px 0 16px;box-shadow:0 2px 0 rgba(36,49,32,.07)}
+.who-h{font:800 .78rem 'Nunito';letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-bottom:8px}
+.who-chips{display:flex;gap:8px;flex-wrap:wrap}
+.pchip{border:2px solid var(--line);background:#fff;color:var(--ink);font:800 .85rem 'Nunito',sans-serif;border-radius:999px;padding:7px 13px;cursor:pointer;transition:transform .12s ease}
+.pchip:hover{transform:translateY(-2px)}
+.pchip[aria-pressed="true"]{background:var(--green);border-color:var(--green);color:#fff}
+.who.attn{animation:attn .5s ease}
+@keyframes attn{0%,100%{transform:translateX(0)}25%{transform:translateX(-6px)}50%{transform:translateX(6px)}75%{transform:translateX(-4px)}}
+.meal{background:var(--card);border-radius:var(--radius);padding:14px 15px;margin-bottom:14px;box-shadow:0 2px 0 rgba(36,49,32,.07)}
+.meal.info{border-left:6px solid var(--sun)}
+.meal-top{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.meal-top svg{width:22px;height:22px;color:var(--green-deep);flex:none}
+.meal-name{font-family:'Fraunces',serif;font-weight:700;font-size:1.08rem}
+.meal-when{font:800 .78rem 'Nunito';color:#fff;background:var(--thames);border-radius:7px;padding:2px 8px;white-space:nowrap}
+.meal-note{font-size:.85rem;color:var(--muted);margin:6px 0 2px}
+.opt{display:flex;align-items:flex-start;gap:10px;width:100%;text-align:left;background:none;border:2px solid var(--line);border-radius:12px;padding:9px 11px;margin-top:8px;cursor:pointer;font:600 .9rem 'Nunito',sans-serif;color:var(--ink);transition:border-color .15s ease}
+.opt:hover{border-color:var(--green)}
+.opt .box{flex:none;width:22px;height:22px;border-radius:7px;border:2px solid var(--line);display:flex;align-items:center;justify-content:center;margin-top:1px;color:#fff;background:#fff}
+.opt .box svg{width:14px;height:14px;display:none}
+.opt.on{border-color:var(--green);background:#EEF5E7}
+.opt.on .box{background:var(--green);border-color:var(--green)}
+.opt.on .box svg{display:block}
+.opt-body{flex:1}
+.badge{display:inline-block;font:800 .62rem 'Nunito',sans-serif;letter-spacing:.06em;border-radius:5px;padding:1px 6px;margin-left:5px;vertical-align:1px}
+.badge.gf{background:#E4F0E0;color:var(--green-deep)}
+.badge.v{background:#E3ECF6;color:var(--thames)}
+.badge.k{background:#FBEED0;color:#8A6510}
+.badge.ahead{background:var(--sun);color:var(--green-deep)}
+.orderers{font-size:.78rem;font-weight:800;color:var(--thames);margin-top:3px}
+.pass{background:var(--green-deep);color:#F4F8EE;border-radius:var(--radius);padding:16px;margin-top:24px}
+.pass h2{font-family:'Fraunces',serif;font-weight:900;font-size:1.25rem;display:flex;align-items:center;gap:8px}
+.pass h2 svg{width:20px;height:20px;color:var(--sun);flex:none}
+.pass-sub{font-size:.82rem;color:#BFD6B5;font-weight:700;margin-top:2px}
+.pass-meal{margin-top:12px}
+.pm-name{font-weight:800;color:var(--sun);font-size:.82rem;letter-spacing:.06em;text-transform:uppercase}
+.pass-meal ul{list-style:none;margin-top:3px}
+.pass-meal li{font-size:.88rem;padding:3px 0;border-bottom:1px dashed rgba(255,255,255,.18)}
+.pass-meal li b{color:#fff}
+.pass-empty{font-size:.88rem;color:#BFD6B5;margin-top:8px}
+.copybtn{margin-top:16px;background:var(--sun);color:var(--green-deep);border:none;border-radius:999px;font:800 .85rem 'Nunito',sans-serif;padding:10px 18px;cursor:pointer}
+.copybtn:hover{filter:brightness(1.05)}
+
 /* ---------- footer ---------- */
 footer{margin-top:34px;text-align:center;color:var(--muted);font-size:.8rem}
 footer p+p{margin-top:4px}
@@ -403,8 +448,72 @@ const ALBERT = [
  {icon:'bus',label:'On a double-decker or the tube'}
 ];
 
+const PEOPLE = ['Rachael','Michael','Boden','Blair','Rob','Will'];
+
+const MEALS = [
+ {id:'thu-dinner', name:'Thursday dinner', when:'Thu 7.15pm', icon:'pot',
+  note:'Cheese board follows later in the evening: Haute Fromagerie selection, biscuits for cheese, gluten-free oatcakes, grapes and pickled red onion. No ordering required, it simply appears.',
+  options:[
+   {id:'kids-pasta', label:'Tomato pasta: fusilli with roasted garlic sauce and cucumber sticks', tags:['K','V']},
+   {id:'goujons', label:'Chicken goujons with salt and pepper wedges and lamb\u2019s lettuce', tags:['GF']},
+   {id:'tenders', label:'Buttermilk chicken tenders with wedges and lamb\u2019s lettuce', tags:[]},
+   {id:'veg-fusilli', label:'Fusilli with artichokes, olives, rocket and vine tomatoes', tags:['V']},
+   {id:'choc-banana', label:'Chocolate-dipped banana for pudding', tags:['GF','V','K']}
+  ]},
+ {id:'fri-breakfast', name:'Friday breakfast', when:'Fri before 9.00am', icon:'cup',
+  note:'Quick, before the Clubhouse. Apple and blood orange juice on the table for everyone.',
+  options:[
+   {id:'oats', label:'Overnight oats with blueberries, banana and peanut butter', tags:['V'], ahead:true},
+   {id:'granola', label:'Granola with Greek yoghurt and berries', tags:['V','GF']},
+   {id:'porridge', label:'Porridge with sliced banana', tags:['V','K']},
+   {id:'hxb', label:'Toasted gluten-free hot cross bun', tags:['GF','V']}
+  ]},
+ {id:'fri-picnic', name:'Battersea picnic', when:'Fri lunch', icon:'park', info:true,
+  note:'From home: grapes, strawberries, nectarines, cucumber sticks, and oatcakes with cheese. The substantial part is bought on the day, so save some appetite.'},
+ {id:'fri-dinner', name:'Friday dinner: stir fry night', when:'Fri evening', icon:'pot',
+  note:'One wok, many noodles. Vegetables, Tofoo, soy and sesame, finished with pickled red onion.',
+  options:[
+   {id:'sf-rice', label:'Stir fry with rice noodles', tags:['GF']},
+   {id:'sf-lentil', label:'Stir fry with high-protein lentil noodles', tags:['V']},
+   {id:'sf-chicken', label:'Stir fry with lentil noodles and chicken tenders', tags:[]},
+   {id:'kids-tenders', label:'Chicken tenders with wedges, cucumber and vine tomatoes', tags:['K']}
+  ]},
+ {id:'sat-breakfast', name:'Saturday breakfast', when:'Sat before 8.30am', icon:'run',
+  note:'Pre-parkrun. Kept deliberately light: nothing to regret at kilometre two.',
+  options:[
+   {id:'mini-oats', label:'Mini overnight oats', tags:['V'], ahead:true},
+   {id:'banana-yog', label:'Banana and a small yoghurt', tags:['GF','V','K']},
+   {id:'juice-only', label:'Juice only, running on ambition', tags:['GF','V','K']}
+  ]},
+ {id:'sat-brunch', name:'Saturday brunch', when:'Sat post-parkrun', icon:'roast',
+  note:'The victory meal. Eggs are the centrepiece, there are 24 of them.',
+  options:[
+   {id:'scrambled', label:'Scrambled eggs with avocado, vine tomatoes and rocket', tags:['GF','V']},
+   {id:'poached', label:'Poached eggs with avocado, vine tomatoes and rocket', tags:['GF','V']},
+   {id:'gf-bagel', label:'Gluten-free chia seed bagel with eggs', tags:['GF','V']},
+   {id:'fishcakes', label:'Cod fishcakes with poached eggs', tags:['GF']},
+   {id:'kids-eggs', label:'Plain scrambled eggs, or granola for refuseniks', tags:['K']}
+  ]},
+ {id:'sat-dinner', name:'Saturday dinner', when:'Sat 6.30pm', icon:'pizza', info:true,
+  note:'Piccolo\u2019s pizza, ordered in and eaten on the sofa. The bingo winner chooses the toppings, as agreed.'},
+ {id:'sun-breakfast', name:'Sunday breakfast', when:'Sun morning', icon:'croissant',
+  note:'A send-off before Richmond Park and the Telegraph. Yoghurt, berries and juice for all.',
+  options:[
+   {id:'twist', label:'Belgian chocolate twist, baked fresh from frozen (five available)', tags:['V']},
+   {id:'manna-dew', label:'Manna Dew pastry, wisely saved from Saturday', tags:['GF']},
+   {id:'hxb2', label:'Toasted gluten-free hot cross bun', tags:['GF','V']},
+   {id:'oats2', label:'Overnight oats', tags:['V'], ahead:true},
+   {id:'porridge2', label:'Porridge', tags:['V','K']}
+  ]},
+ {id:'sun-lunch', name:'Sunday lunch', when:'Sun 12.00pm', icon:'roast', info:true,
+  note:'The Telegraph on the heath. Yorkshire puddings the size of Blair\u2019s head. The kitchen at home is closed and the chef is off duty.'}
+];
+const BADGE_CLASS = {GF:'gf', V:'v', K:'k'};
+
 /* ---------------- state ---------------- */
-const state = { done:{}, spotted:new Set(), albert:new Set() };
+const state = { done:{}, spotted:new Set(), albert:new Set(), orders:{} };
+
+
 
 /* ---------------- Supabase (shared family card) ----------------
    1. Create a free project at supabase.com
@@ -438,6 +547,12 @@ spotBtn.setAttribute('aria-controls','panel-spotters');
 spotBtn.innerHTML = I.parakeet + 'Spotters';
 spotBtn.addEventListener('click',()=>selectTab('spotters'));
 tabsEl.appendChild(spotBtn);
+const menuBtn = document.createElement('button');
+menuBtn.className='tab menu'; menuBtn.role='tab'; menuBtn.id='tab-menu';
+menuBtn.setAttribute('aria-controls','panel-menu');
+menuBtn.innerHTML = I.pot + 'Menu';
+menuBtn.addEventListener('click',()=>selectTab('menu'));
+tabsEl.appendChild(menuBtn);
 
 DAYS.forEach(d=>{
   const p = document.createElement('section');
@@ -507,6 +622,43 @@ sp.innerHTML = `
   <button class="chip" id="chip">${I.star} New piece found - see Albert grow</button>`;
 panelsEl.appendChild(sp);
 
+/* ---------------- menu panel ---------------- */
+function badgeHtml(o){
+  let b = (o.tags||[]).map(t=>`<span class="badge ${BADGE_CLASS[t]}">${t==='K'?'KIDS':t}</span>`).join('');
+  if(o.ahead) b += '<span class="badge ahead">ORDER BY BEDTIME</span>';
+  return b;
+}
+const mp = document.createElement('section');
+mp.className='panel'; mp.id='panel-menu'; mp.role='tabpanel';
+mp.setAttribute('aria-labelledby','tab-menu');
+mp.innerHTML = `
+  <div class="day-head"><span class="day-title">Room service</span><span class="day-date">Ch\u00e2teau Putney</span></div>
+  <p class="spot-intro">The kitchen respectfully requests that overnight oats are ordered by bedtime the night before. All other orders are taken with good grace and no guarantees.</p>
+
+  <div class="who" id="whoBox">
+    <div class="who-h">Who is ordering?</div>
+    <div class="who-chips">${PEOPLE.map(p=>`<button class="pchip" data-who="${p}" aria-pressed="false">${p}</button>`).join('')}</div>
+  </div>
+
+  ${MEALS.map(m=>`
+  <div class="meal${m.info?' info':''}" id="meal-${m.id}">
+    <div class="meal-top">${I[m.icon]}<span class="meal-name">${m.name}</span><span class="meal-when">${m.when}</span></div>
+    <p class="meal-note">${m.note}</p>
+    ${m.info?'':m.options.map(o=>`
+      <button class="opt" data-meal="${m.id}" data-opt="${o.id}" aria-pressed="false">
+        <span class="box">${I.tick}</span>
+        <span class="opt-body">${o.label}${badgeHtml(o)}<div class="orderers" data-orderers></div></span>
+      </button>`).join('')}
+  </div>`).join('')}
+
+  <div class="pass" id="pass">
+    <h2>${I.roast} Chef\u2019s pass</h2>
+    <p class="pass-sub">Every order, one list. The chef consults this and no other authority.</p>
+    <div id="passBody"></div>
+    <button class="copybtn" id="copyPass">Copy for the chef</button>
+  </div>`;
+panelsEl.appendChild(mp);
+
 /* ---------------- interactions ---------------- */
 function selectTab(id){
   document.querySelectorAll('.tab').forEach(t=>t.setAttribute('aria-selected', t.id==='tab-'+id));
@@ -538,8 +690,97 @@ panelsEl.addEventListener('click',e=>{
     lastLocalChange = Date.now();
     saveState();
     albertSync();
+    return;
+  }
+  const pchip = e.target.closest('.pchip');
+  if(pchip){
+    who = who===pchip.dataset.who ? '' : pchip.dataset.who;
+    try{ localStorage.setItem('blw-who', who); }catch(err){}
+    renderMenu();
+    return;
+  }
+  const opt = e.target.closest('.opt');
+  if(opt){
+    if(!who){
+      const box = document.getElementById('whoBox');
+      box.classList.remove('attn'); void box.offsetWidth; box.classList.add('attn');
+      box.scrollIntoView({behavior: reduceMotionQuery() ? 'auto' : 'smooth', block:'center'});
+      return;
+    }
+    toggleOrder(opt.dataset.meal, opt.dataset.opt);
   }
 });
+
+function reduceMotionQuery(){
+  return window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+}
+
+/* ---------------- menu logic ---------------- */
+let who = '';
+try{ who = localStorage.getItem('blw-who') || ''; }catch(e){}
+if(PEOPLE.indexOf(who)===-1) who = '';
+
+function toggleOrder(mealId, optId){
+  const meal = state.orders[mealId] = state.orders[mealId] || {};
+  const arr = meal[who] = meal[who] || [];
+  const ix = arr.indexOf(optId);
+  if(ix > -1) arr.splice(ix,1); else arr.push(optId);
+  if(arr.length===0) delete meal[who];
+  if(Object.keys(meal).length===0) delete state.orders[mealId];
+  renderMenu();
+  lastLocalChange = Date.now();
+  saveState();
+}
+
+function ordersFor(mealId, optId){
+  const meal = state.orders[mealId] || {};
+  return PEOPLE.filter(p=>(meal[p]||[]).indexOf(optId)>-1);
+}
+
+function renderMenu(){
+  document.querySelectorAll('.pchip').forEach(c=>c.setAttribute('aria-pressed', c.dataset.who===who));
+  document.querySelectorAll('.opt').forEach(o=>{
+    const names = ordersFor(o.dataset.meal, o.dataset.opt);
+    const mine = who && names.indexOf(who)>-1;
+    o.classList.toggle('on', mine);
+    o.setAttribute('aria-pressed', mine);
+    const line = o.querySelector('[data-orderers]');
+    line.textContent = names.length ? 'Ordered by '+names.join(', ') : '';
+  });
+  renderPass();
+}
+
+function renderPass(){
+  const body = document.getElementById('passBody');
+  let html = '';
+  MEALS.forEach(m=>{
+    if(m.info) return;
+    const meal = state.orders[m.id];
+    if(!meal) return;
+    const lines = m.options.map(o=>{
+      const names = ordersFor(m.id, o.id);
+      if(!names.length) return '';
+      return `<li><b>${names.length}\u00d7</b> ${o.label.split(':')[0].split(',')[0]} \u2014 ${names.join(', ')}${o.ahead?' <b>(prep tonight)</b>':''}</li>`;
+    }).join('');
+    if(lines) html += `<div class="pass-meal"><div class="pm-name">${m.name} \u00b7 ${m.when}</div><ul>${lines}</ul></div>`;
+  });
+  body.innerHTML = html || '<p class="pass-empty">No orders yet. The chef will improvise, and nobody wants that.</p>';
+}
+
+function passText(){
+  let out = 'CHEF\u2019S PASS \u2014 The Big London Weekend\n';
+  let any = false;
+  MEALS.forEach(m=>{
+    if(m.info) return;
+    const lines = m.options.map(o=>{
+      const names = ordersFor(m.id, o.id);
+      if(!names.length) return '';
+      return '  - '+names.length+'x '+o.label+(o.ahead?' [prep the night before]':'')+' \u2014 '+names.join(', ');
+    }).filter(Boolean);
+    if(lines.length){ any = true; out += '\n'+m.name+' ('+m.when+')\n'+lines.join('\n')+'\n'; }
+  });
+  return any ? out : out+'\nNo orders placed yet.';
+}
 
 function renderCells(){
   document.querySelectorAll('.bcell').forEach(c=>{
@@ -555,17 +796,24 @@ function setSync(msg, ok){
   if(el) el.innerHTML = ok ? 'Shared card: <b>'+msg+'</b>' : msg;
 }
 
+let ordersRemote = true;
 async function loadState(){
   if(!sb){ setSync('Supabase is not connected yet, so stamps stay on this device only.'); return; }
   try{
-    const {data, error} = await sb.from('weekend').select('spotted,albert').eq('id','family').single();
-    if(error) throw error;
+    const cols = ordersRemote ? 'spotted,albert,orders' : 'spotted,albert';
+    const {data, error} = await sb.from('weekend').select(cols).eq('id','family').single();
+    if(error){
+      if(ordersRemote){ ordersRemote = false; return loadState(); }
+      throw error;
+    }
     state.spotted = new Set((data.spotted||[]).map(String));
     state.albert = new Set((data.albert||[]).map(String));
+    if(ordersRemote) state.orders = data.orders || {};
     renderCells();
+    renderMenu();
     document.getElementById('banner-things').classList.toggle('show', state.spotted.size===SPOTS.length);
     document.getElementById('banner-albert').classList.toggle('show', state.albert.size===ALBERT.length);
-    setSync('up to date', true);
+    setSync(ordersRemote ? 'up to date' : 'up to date (orders on this device only until the orders column is added)', true);
     albertSync();
   }catch(e){
     setSync('Could not reach Supabase, so stamps stay on this device for now.');
@@ -578,8 +826,10 @@ function saveState(){
   clearTimeout(saveTimer);
   saveTimer = setTimeout(async ()=>{
     try{
+      const payload = {spotted:[...state.spotted], albert:[...state.albert], updated_at:new Date().toISOString()};
+      if(ordersRemote) payload.orders = state.orders;
       const {error} = await sb.from('weekend')
-        .update({spotted:[...state.spotted], albert:[...state.albert], updated_at:new Date().toISOString()})
+        .update(payload)
         .eq('id','family');
       if(error) throw error;
       setSync('saved', true);
@@ -756,6 +1006,19 @@ function highlightNow(now){
   tick();
   setInterval(tick,1000);
   updateAlbertCaption();
+  renderMenu();
+
+  /* copy the chef's pass */
+  document.getElementById('copyPass').addEventListener('click',()=>{
+    const btn = document.getElementById('copyPass');
+    const text = passText();
+    const done = ()=>{ btn.textContent = 'Copied. To your stations.'; setTimeout(()=>btn.textContent='Copy for the chef', 2200); };
+    if(navigator.clipboard && navigator.clipboard.writeText){
+      navigator.clipboard.writeText(text).then(done).catch(()=>{ window.prompt('Copy the pass below:', text); });
+    } else {
+      window.prompt('Copy the pass below:', text);
+    }
+  });
 
   /* watch Albert: queued pieces reveal only when he is on screen */
   const stage = document.getElementById('albertStage');
